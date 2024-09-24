@@ -1,46 +1,26 @@
 ﻿using System;
-using Microsoft.Data.SqlClient;
+using app.Data;
 
 class Program
 {
     static void Main(string[] args)
     {
-        string connectionString = "Server=localhost\\SQLEXPRESS;Database=ConsoleApplicationDB;Trusted_Connection=True;Encrypt=False;";
-
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (var context = new AppDbContext())
         {
-            try
-            {
-                // Open the connection
-                connection.Open();
-                Console.WriteLine("Connection opened successfully.");
+            // Crear la base de datos si no existe
+            context.Database.EnsureCreated();
 
-                string query = "SELECT * FROM Cliente";
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {   
-                            Console.WriteLine(reader["codigo"]);
-                            Console.WriteLine(reader["credito"]);
-                            Console.WriteLine(reader["codigo_empresa"]);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-            }
-            finally
-            {
-                // Closed connection
-                if (connection.State == System.Data.ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
+            // Crear un nuevo producto
+            // var nuevoProducto = new Producto { Nombre = "Laptop", Precio = 999.99 };
+            // context.Productos.Add(nuevoProducto);
+            context.SaveChanges();
+            
+            // Consultar productos
+            // var productos = context.Productos.ToList();
+            // foreach (var producto in productos)
+            // {
+            //     Console.WriteLine($"Producto: {producto.Nombre}, Precio: {producto.Precio}");
+            // }
         }
     }
 }

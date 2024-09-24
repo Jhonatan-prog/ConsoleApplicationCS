@@ -1,36 +1,48 @@
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
-namespace sqltest
+namespace app.test
 {
-    class Program
+    class Testing
     {
         public void TestDb()
         {
             try 
             { 
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                string rootDirectory = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\.."));
+                // Build configuration
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(rootDirectory)
+                    .AddJsonFile("appsettings.json");
 
-                builder.DataSource = "<your_server.database.windows.net>"; 
-                builder.UserID = "<your_username>";            
-                builder.Password = "<your_password>";     
-                builder.InitialCatalog = "<your_database>";
-         
-                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                IConfiguration configuration = builder.Build();
+
+                string? connectionString = configuration.GetConnectionString("DefaultConnection");
+
+                if (string.IsNullOrEmpty(connectionString))
                 {
-                    Console.WriteLine("\nQuery data example:");
+                    Console.WriteLine("Connection string is null or empty.");
+                    return;
+                }
+         
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    Console.WriteLine("\nQuery:");
                     Console.WriteLine("=========================================\n");
-                    
-                    connection.Open();       
 
-                    String sql = "SELECT * FROM sys.databases";
+                    connection.Open();
 
+
+                    string sql = "SELECT * FROM Cliente";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Console.WriteLine("{0} {1}", reader.GetString(0), reader.GetString(1));
+                                Console.WriteLine(reader["codigo"]);
+                                Console.WriteLine(reader["credito"]);
+                                Console.WriteLine(reader["codigo_empresa"]);
                             }
                         }
                     }                    
@@ -41,7 +53,7 @@ namespace sqltest
                 Console.WriteLine(e.ToString());
             }
             Console.WriteLine("\nDone. Press enter.");
-            Console.ReadLine(); 
+            Console.ReadLine();
         }
     }
 }
