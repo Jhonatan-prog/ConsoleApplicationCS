@@ -1,5 +1,5 @@
 
-namespace TallerEvaluativo.Diagram3.Facturas {
+namespace app.Models.Diagram3 {
 public class FrmPersona
 {
     private string Codigo { get; set; }

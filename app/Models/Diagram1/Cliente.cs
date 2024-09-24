@@ -1,4 +1,4 @@
-namespace projects.Models {
+namespace app.Models.Diagram1 {
 
   public class Cliente : Persona {
     // Atributo privado

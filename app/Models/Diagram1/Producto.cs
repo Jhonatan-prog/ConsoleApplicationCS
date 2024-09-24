@@ -1,11 +1,12 @@
-namespace app.Models.Diagram3 {
-    public class FrmProducto {
+namespace app.Models.Diagram1 
+{
+    public class Producto {
       private string Codigo;
       private string Nombre;
       private int Stock;
       private double ValorUnitario;
 
-      public FrmProducto(string codigo, string nombre, int stock, double valorUnitario) {
+      public Producto(string codigo, string nombre, int stock, double valorUnitario) {
         Codigo = codigo;
         Nombre = nombre;
         Stock = stock;

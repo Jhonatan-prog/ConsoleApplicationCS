@@ -1,14 +1,15 @@
-namespace app.Models.Diagram3 {
-    public class FrmProductosPorFactura 
+namespace app.Models.Diagram1 
+{
+    public class ProductosPorFactura 
     {
       // attributes
       private int Cantidad;
       private double Subtotal;
 
       // Association with a product and an invoice
-      public FrmProducto? Producto { get; set; }
-      public FrmFactura? Factura { get; set; }
-      public FrmProductosPorFactura(int cantidad, double subtotal) 
+      public Producto? Producto { get; set; }
+      public Factura? Factura { get; set; }
+      public ProductosPorFactura(int cantidad, double subtotal) 
       {
         Cantidad = cantidad;
         Subtotal = subtotal;

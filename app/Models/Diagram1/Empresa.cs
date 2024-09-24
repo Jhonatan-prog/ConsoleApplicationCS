@@ -1,9 +1,10 @@
-namespace app.Models.Diagram3 {
-    public class FrmEmpresa {
+namespace app.Models.Diagram1 
+{
+    public class Empresa {
         private string Codigo { get; set;}
         private string Nombre { get; set;}
 
-        public FrmEmpresa(string codigo, string nombre) {
+        public Empresa(string codigo, string nombre) {
           Codigo = codigo;
           Nombre = nombre;
         }

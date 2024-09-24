@@ -1,4 +1,4 @@
-namespace TallerEvaluativo.Diagram3.Facturas {
+namespace app.Models.Diagram3 {
   public class FrmCliente : FrmPersona
   {
     private double Credito { get; set; }

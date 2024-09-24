@@ -1,13 +1,14 @@
-namespace app.Models.Diagram3 {
-    public class FrmFactura 
+namespace app.Models.Diagram1 
+{
+    public class Factura 
     {
       private DateOnly Fecha;
       private long Numero;
       private double Total;
       // Relationships
-      public FrmPersona Cliente { get; set; }
-      public FrmPersona Vendedor { get; set; }
-      public FrmFactura(DateOnly fecha, long numero, double total, FrmCliente cliente, FrmPersona vendedor) 
+      public Cliente Cliente { get; set; }
+      public Vendedor Vendedor { get; set; }
+      public Factura(DateOnly fecha, long numero, double total, Cliente cliente, Vendedor vendedor) 
       {
         Fecha = fecha;
         Numero = numero;
