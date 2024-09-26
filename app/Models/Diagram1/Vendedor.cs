@@ -25,14 +25,14 @@ namespace app.Models.Diagram1 {
 
     // Constructor sobrecargado con parámetros
     public Vendedor(
-      string codigo, 
+      //string codigo, 
       string email, 
       string nombre, 
       string telefono, 
       int carnet,
       string direccion
       ) : base(
-        codigo, 
+        //codigo, 
         email, 
         nombre, 
         telefono

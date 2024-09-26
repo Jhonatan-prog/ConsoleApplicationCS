@@ -1,6 +1,9 @@
+// controllers
+using app.Controllers;
+
 namespace app.Models.Diagram1 
 {
-    public class ProductosPorFactura 
+    public class ProductosPorFactura : DbRepository
     {
       // attributes
       private int Cantidad;
@@ -15,9 +18,47 @@ namespace app.Models.Diagram1
         Subtotal = subtotal;
       }
 
-      public void borrar() {}
-      public void consultar() {}
-      public void guardar() {}
-      public void modificar() {}
+      public void borrar(int numero_factura) 
+      {
+        var Pfactura = _context.ProductosPorFactura.Find(numero_factura);
+        if (Pfactura == null)
+        {
+          Console.Write("Porductos por factura no encontrados.");
+          return;
+        }
+
+        _context.ProductosPorFactura.Remove(Pfactura);
+        _context.SaveChanges();
+      }
+      public ProductosPorFactura? consultar(int numero_factura) 
+      {
+        var PFactura = _context.ProductosPorFactura.Find(numero_factura);
+        if (PFactura == null) 
+        {
+          Console.Write("Porductos por factura no encontrados.");
+          return null;
+        }
+
+        return PFactura;
+      }
+      public void guardar() 
+      {
+        _context.ProductosPorFactura.Add(this);
+        _context.SaveChanges();
+        Console.WriteLine("Producto guardada exitosamente.");
+      }
+      public void modificar(int numero_factura, ProductosPorFactura  nuevoPFactura) 
+      {
+        var PFactura = _context.ProductosPorFactura.Find(numero_factura);
+        if (PFactura == null) 
+        {
+          Console.Write("Porductos por factura no encontrados.");
+          return;
+        }
+
+        _context.ProductosPorFactura.Update(nuevoPFactura);
+        _context.SaveChanges();
+        Console.WriteLine("Productos actualizados exitosamente.");
+      }
     }
 }

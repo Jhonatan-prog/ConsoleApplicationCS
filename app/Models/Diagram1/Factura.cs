@@ -1,6 +1,9 @@
+// controllers
+using app.Controllers;
+
 namespace app.Models.Diagram1 
 {
-    public class Factura 
+    public class Factura : DbRepository
     {
       private DateOnly Fecha;
       private long Numero;
@@ -8,6 +11,7 @@ namespace app.Models.Diagram1
       // Relationships
       public Cliente Cliente { get; set; }
       public Vendedor Vendedor { get; set; }
+
       public Factura(DateOnly fecha, long numero, double total, Cliente cliente, Vendedor vendedor) 
       {
         Fecha = fecha;
@@ -17,9 +21,47 @@ namespace app.Models.Diagram1
         Vendedor = vendedor ?? throw new ArgumentNullException(nameof(vendedor));
       }
 
-      public void cancelar() {}
-      public void consultar() {}
-      public void guardar() {}
-      public void modificar() {}
+        public void cancelar(int codigo) 
+      {
+        var factura = _context.Factura.Find(codigo);
+        if (factura == null)
+        {
+          Console.Write("Factura del cliente no encontrada.");
+          return;
+        }
+
+        _context.Factura.Remove(factura);
+        _context.SaveChanges();
+      }
+      public Factura? consultar(int numero) 
+      {
+        var factura = _context.Factura.Find(numero);
+        if (factura == null) 
+        {
+          Console.Write("Factura del cliente no encontrada.");
+          return null;
+        }
+
+        return factura;
+      }
+      public void guardar() 
+      {
+        _context.Factura.Add(this);
+        _context.SaveChanges();
+        Console.WriteLine("Producto guardada exitosamente.");
+      }
+      public void modificar(int numero, Factura nuevaFactura) 
+      {
+        var factura = _context.Factura.Find(numero);
+        if (factura == null) 
+        {
+          Console.Write("Factura del cliente no encontrada.");
+          return;
+        }
+
+        _context.Factura.Update(nuevaFactura);
+        _context.SaveChanges();
+        Console.WriteLine("Empresa actualizada exitosamente.");
+      }
     }
 }

@@ -3,6 +3,7 @@ namespace app.Models.Diagram1 {
   public class Cliente : Persona {
     // Atributo privado
     private double credito;
+    public Empresa Empresa { get; set; }
     // Propiedad pública con get y set
     public double Credito {
       get => credito;
@@ -10,25 +11,28 @@ namespace app.Models.Diagram1 {
     }
 
     // Constructor sin parámetros
-    public Cliente(): base() { // Constructor de la clase persona is invoked when we call the Client class
+    public Cliente(double credito, Empresa empresa) : base() {
       credito = 0.0;
+      Empresa = empresa;
     }
 
     // Constructor sobrecargado con parámetros
     public Cliente(
-        string codigo, 
-        string email, 
-        string nombre, 
-        string telefono, 
-        double credito
+      //string? codigo, 
+      string email, 
+      string nombre, 
+      string telefono, 
+      double credito,
+      Empresa empresa
     ) : base(
-        codigo, 
-        email, 
-        nombre, 
-        telefono
+      //codigo, 
+      email, 
+      nombre, 
+      telefono
     ) 
     {
       this.credito = credito;
+      this.Empresa = empresa;
     }
 
   }
