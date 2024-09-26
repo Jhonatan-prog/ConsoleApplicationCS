@@ -11,8 +11,8 @@ namespace app.Models.Diagram1 {
     }
 
     // Constructor sin parámetros
-    public Cliente(double credito, Empresa empresa) : base() {
-      credito = 0.0;
+    public Cliente(Empresa empresa) : base() {
+      Credito = 0;
       Empresa = empresa;
     }
 
