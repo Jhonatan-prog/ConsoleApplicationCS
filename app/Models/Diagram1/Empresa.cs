@@ -10,14 +10,16 @@ namespace app.Models.Diagram1
     public class Empresa : DbRepository {
       [Key]
       [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Auto-increment in SQL Server
-      public int? Codigo { get; set; }  // Primary key
-      private string Nombre { get; set;}
+      public long? Codigo { get; set; }  // Primary key   
+      public string Nombre { get; set; }
+      // Relación con Clientes
+      public virtual ICollection<Cliente> Clientes { get; set; }
       public Empresa() : base() 
       {
         Nombre = "";
       }
 
-      public Empresa(string nombre, int? codigo = null) : base() {
+      public Empresa(string nombre, long? codigo = null) : base() {
         Codigo = codigo;
         Nombre = nombre;
       }
@@ -36,9 +38,9 @@ namespace app.Models.Diagram1
         Console.WriteLine("Empresa actualizada exitosamente.");
       }
 
-      public Empresa Consultar(string nombre) 
+      public Empresa Consultar(long codigo) 
       {
-        var empresa = _context.Empresa.FirstOrDefault(field => field.Nombre == nombre);
+        var empresa = _context.Empresa.FirstOrDefault(field => field.Codigo == codigo);
         if (empresa == null) 
         {
           Console.Write("Empresa no encontrada.");

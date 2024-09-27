@@ -33,7 +33,7 @@ namespace app.test
                     connection.Open();
 
 
-                    string sql = "SELECT * FROM Cliente";
+                    string sql = "SELECT * FROM Empresa";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -41,8 +41,7 @@ namespace app.test
                             while (reader.Read())
                             {
                                 Console.WriteLine(reader["codigo"]);
-                                Console.WriteLine(reader["credito"]);
-                                Console.WriteLine(reader["codigo_empresa"]);
+                                Console.WriteLine(reader["nombre"]);
                             }
                         }
                     }                    
@@ -52,8 +51,8 @@ namespace app.test
             {
                 Console.WriteLine(e.ToString());
             }
-            Console.WriteLine("\nDone. Press enter.");
-            Console.ReadLine();
+            Console.WriteLine("\nTest -> DataBabase connection successfully finished.\n");
         }
+
     }
 }

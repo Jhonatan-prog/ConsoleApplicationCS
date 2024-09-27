@@ -7,26 +7,31 @@ using app.Controllers;
 
 namespace app.Models.Diagram1 
 {
-    public class Producto : DbRepository {
+    public class Producto : DbRepository 
+    {
       [Key]
       [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Auto-increment in SQL Server
-      public int? Codigo { get; set; }  // Primary key
-      private string Nombre;
-      private int Stock;
-      private double ValorUnitario;
+      public long? Codigo { get; set; }  // Primary key
+      public string Nombre { get; set; }
+      public int Stock { get; set; }
+      public double ValorUnitario { get; set; }
+
+      // Relación con ProductosPorFactura
+      public virtual ICollection<ProductosPorFactura> ProductosPorFactura { get; set; }
+
       public Producto()
       {
         Nombre = "";
       }
 
-      public Producto(string nombre, int stock, double valorUnitario, int? codigo = null) : base() {
+      public Producto(string nombre, int stock, double valorUnitario, long? codigo = null) : base() {
         Codigo = codigo;
         Nombre = nombre;
         Stock = stock;
         ValorUnitario = valorUnitario;
       }
 
-      public void borrar(int codigo) 
+      public void borrar(long codigo) 
       {
         var producto = _context.Producto.Find(codigo);
         if (producto == null)
@@ -38,7 +43,7 @@ namespace app.Models.Diagram1
         _context.Producto.Remove(producto);
         _context.SaveChanges();
       }
-      public Producto consultar(int codigo)
+      public Producto consultar(long codigo)
       {
         var producto = _context.Producto.Find(codigo);
         if (producto == null) 
@@ -55,7 +60,7 @@ namespace app.Models.Diagram1
         _context.SaveChanges();
         Console.WriteLine("Producto guardada exitosamente.");
       }
-      public void Modificar(int codigo, Producto nuevoProducto) 
+      public void Modificar(long codigo, Producto nuevoProducto) 
       {
         var producto = _context.Producto.Find(codigo);
         if (producto == null) 

@@ -19,7 +19,7 @@ namespace app.Controllers
             return Query;
         }
 
-        public Vendedor? ObtenerVendedorPorId(int pk) 
+        public Vendedor? ObtenerVendedorPorId(long pk) 
         {
             Vendedor? vendedor = _context.Vendedor.Find(pk);
             return vendedor;
@@ -31,7 +31,7 @@ namespace app.Controllers
           _context.SaveChanges();
         }
 
-        public int EliminarVendedor(int pk) 
+        public int EliminarVendedor(long pk) 
         {
             var vendedor = _context.Vendedor.Find(pk);
             if (vendedor == null) return 0;

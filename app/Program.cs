@@ -1,25 +1,31 @@
 ﻿using app.Models.Diagram1;
 using app.Controllers;
+using app.test;
 
 class Program
 {
     static void Main(string[] args)
-    {   
+    {      
+        Testing test = new Testing();
+        test.TestDb();
+
+        Empresa empresa = new Empresa();
         ControlCliente controlCliente = new();
         ControlPersona controlPersona = new();
 
+        Console.WriteLine("Programa de consola.");
         Console.WriteLine("Instrucciones de uso:");
-        Console.WriteLine("1. Ingrese la funcionalidad que desea (agregar - 1, listar - 2, obtener - 3, actualizar - 4 o eliminar - 5)");
-        Console.WriteLine("2. Escribir el nombre de la tabla");
+        Console.WriteLine("1. Escribir el nombre de la tabla");
+        Console.WriteLine("2. Ingrese la funcionalidad que desea (agregar - 1, listar - 2, obtener - 3, actualizar - 4 o eliminar - 5)");
         Console.WriteLine("3. Ingrese la información pedida despues de ingresar el nombre de la tabla.");
-        Console.WriteLine("4. Para salir escriba la palabra 'exit'.\n");
+        Console.WriteLine("4. Para salir presione 'Ctrl + C'.\n");
         Console.WriteLine("===============================================================================================================");
         while (true) 
         {   
+            Console.Write("Nombre de la tabla: ");
+            var nombreTabla = Console.ReadLine()?.ToLower().Trim();
             Console.Write("Funcionalidad: ");
             var funcionalidad = Console.ReadLine();
-            Console.Write("Nombre de la tabla: ");
-            var nombreTabla = Console.ReadLine();
 
             if (funcionalidad == null || nombreTabla == null) 
             {   
@@ -27,13 +33,11 @@ class Program
                 continue;
             }
 
-            if (nombreTabla?.ToLower().Trim() == "cliente") 
+            if (nombreTabla == "cliente") 
             {
-                switch (Convert.ToInt32(funcionalidad))
+                switch (Convert.ToInt16(funcionalidad))
                 {   
                     case 1:
-                        Console.Write("Codigo (PK): ");
-                        var codigo = Console.ReadLine();
                         Console.Write("Email: ");
                         var email = Console.ReadLine();
                         Console.Write("Nombre: ");
@@ -42,11 +46,21 @@ class Program
                         var telefono = Console.ReadLine();
                         Console.Write("Credito: ");
                         var credito = Console.ReadLine();
+                        Console.Write("Empresa (número 1 - 3): ");
+                        long codigoEmpresa = Convert.ToInt64(Console.ReadLine());
 
-                        Persona nuevaPersona = new Persona(codigo, email, nombre, telefono);
-                        Cliente nuevoCliente = new Cliente(Convert.ToDouble(credito));
+                        Empresa Empresa = empresa.Consultar(codigoEmpresa);
+
+                        if (email == null || nombre == null || telefono == null) 
+                        {   
+                            Console.Write("Los campos no pueden estar vacíos.");
+                            continue;
+                        }
+
+                        Persona nuevaPersona = new Persona(email, nombre, telefono);
+                        Cliente nuevoCliente = new Cliente((float) Convert.ToDouble(credito), Empresa);
                         controlPersona.AgregarPersona(nuevaPersona); 
-                        controlCliente.AgregarCliente(nuevoCliente);
+                        controlCliente.AgregarCliente(nuevoCliente); // UPDATE DB
                         break;
                     case 2:
                         List<Cliente> clientes = controlCliente.ListarClientes();
@@ -66,8 +80,6 @@ class Program
                         Console.WriteLine(cliente);
                         break;
                     case 4:
-                        Console.Write("Codigo: ");
-                        var newCodigo = Console.ReadLine();
                         Console.Write("Email: ");
                         var newEmail = Console.ReadLine();
                         Console.Write("Nombre: ");
@@ -77,8 +89,8 @@ class Program
                         Console.Write("Credito: ");
                         var newCredito = Console.ReadLine();
 
-                        Cliente ClienteActualizado = new Cliente(newCodigo, newEmail, newNombre, newTelefono, Convert.ToDouble(newCredito));
-                        controlCliente.ActualizarCliente(ClienteActualizado);
+                        // Cliente ClienteActualizado = new Cliente(Convert.ToDouble(credito), Empresa);
+                        // controlCliente.ActualizarCliente(ClienteActualizado);
                         break;
                     case 5:
                         Console.Write("Ingrese identificador: ");
@@ -91,12 +103,17 @@ class Program
                         }  
 
                         controlCliente.EliminarCliente(id);
+                        Console.WriteLine("Cliente eliminado con exito.");
                         break;
 
                     default:
                         Console.WriteLine("Funcionalidad no valida.");
                         break;
                 }
+            } 
+            else if (nombreTabla == "vendedor") 
+            {
+
             }
 
             break;

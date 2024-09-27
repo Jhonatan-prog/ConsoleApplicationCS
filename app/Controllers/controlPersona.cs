@@ -19,7 +19,7 @@ namespace app.Controllers
             return Query;
         }
 
-        public Persona? ObtenerPersonaPorId(int pk) 
+        public Persona? ObtenerPersonaPorId(long pk) 
         {
             Persona? cliente = _context.Persona.Find(pk);
             return cliente;
@@ -31,7 +31,7 @@ namespace app.Controllers
           _context.SaveChanges();
         }
 
-        public int EliminarPersona(int pk) 
+        public int EliminarPersona(long pk) 
         {
             var persona = _context.Persona.Find(pk);
             if (persona == null) return 0;

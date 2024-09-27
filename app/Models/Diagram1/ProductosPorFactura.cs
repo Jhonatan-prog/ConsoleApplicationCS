@@ -1,3 +1,7 @@
+// system
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 // controllers
 using app.Controllers;
 
@@ -5,20 +9,29 @@ namespace app.Models.Diagram1
 {
     public class ProductosPorFactura : DbRepository
     {
-      // attributes
-      private int Cantidad;
-      private double Subtotal;
+      [Key]
+      [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Auto-increment in SQL Server
+      public long? Codigo { get; set; }
+      public int Cantidad { get; set; }
+      public double Subtotal { get; set; }
 
-      // Association with a product and an invoice
-      public Producto? Producto { get; set; }
-      public Factura? Factura { get; set; }
+      // Relación con Factura
+      public long FacturaId { get; set; }
+      public virtual Factura Factura { get; set; }
+
+      // Relación con Producto
+      public long ProductoId { get; set; }
+      public virtual Producto Producto { get; set; }
+
+      public ProductosPorFactura() {}
+
       public ProductosPorFactura(int cantidad, double subtotal) 
       {
         Cantidad = cantidad;
         Subtotal = subtotal;
       }
 
-      public void borrar(int numero_factura) 
+      public void borrar(long numero_factura) 
       {
         var Pfactura = _context.ProductosPorFactura.Find(numero_factura);
         if (Pfactura == null)
@@ -30,7 +43,7 @@ namespace app.Models.Diagram1
         _context.ProductosPorFactura.Remove(Pfactura);
         _context.SaveChanges();
       }
-      public ProductosPorFactura? consultar(int numero_factura) 
+      public ProductosPorFactura? consultar(long numero_factura) 
       {
         var PFactura = _context.ProductosPorFactura.Find(numero_factura);
         if (PFactura == null) 
@@ -47,7 +60,7 @@ namespace app.Models.Diagram1
         _context.SaveChanges();
         Console.WriteLine("Producto guardada exitosamente.");
       }
-      public void modificar(int numero_factura, ProductosPorFactura  nuevoPFactura) 
+      public void modificar(long numero_factura, ProductosPorFactura  nuevoPFactura) 
       {
         var PFactura = _context.ProductosPorFactura.Find(numero_factura);
         if (PFactura == null) 

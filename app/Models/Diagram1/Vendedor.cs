@@ -1,45 +1,24 @@
 namespace app.Models.Diagram1 {
 
   public class Vendedor : Persona {
+    // Propiedades públicas con auto-properties
+    public int Carnet { get; set; }
+    public string Direccion { get; set; }
 
-    // Atributos privados
-    private int carnet;
-    private string direccion;
+    // Relación con Persona (herencia)
+    public virtual Persona Persona { get; set; }
 
-    // Propiedades públicas con get y set
-    public int Carnet {
-      get => carnet;
-      set => carnet = value;
-    }
-
-    public string Direccion {
-      get => direccion;
-      set => direccion = value;
-    }
-
-    // Constructor sin parámetros
     public Vendedor() : base() {
-      carnet = 0;
-      direccion = string.Empty;
+      Carnet = 0;
+      Direccion = string.Empty;
     }
 
     // Constructor sobrecargado con parámetros
-    public Vendedor(
-      //string codigo, 
-      string email, 
-      string nombre, 
-      string telefono, 
-      int carnet,
-      string direccion
-      ) : base(
-        //codigo, 
-        email, 
-        nombre, 
-        telefono
-      ) 
+    public Vendedor(int carnet, string direccion, string email, string nombre, string telefono, long? codigo = null)
+      : base(email, nombre, telefono, codigo)
     {
-      this.carnet = carnet;
-      this.direccion = direccion;
+      this.Carnet = carnet;
+      this.Direccion = direccion;
     }
   }
 }

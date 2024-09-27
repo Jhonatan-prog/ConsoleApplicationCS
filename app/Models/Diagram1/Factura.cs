@@ -1,3 +1,7 @@
+// system
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 // controllers
 using app.Controllers;
 
@@ -5,23 +9,30 @@ namespace app.Models.Diagram1
 {
     public class Factura : DbRepository
     {
-      private DateOnly Fecha;
-      private long Numero;
-      private double Total;
-      // Relationships
-      public Cliente Cliente { get; set; }
-      public Vendedor Vendedor { get; set; }
+      [Key]
+      [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Auto-increment in SQL Server
+      public long? Numero { get; set; }  // Primary key
+      public DateTime  Fecha { get; set; }
+      public double Total { get; set; }
 
-      public Factura(DateOnly fecha, long numero, double total, Cliente cliente, Vendedor vendedor) 
+      // Relación con Cliente
+      public long ClienteId { get; set; }
+      public virtual Cliente Cliente { get; set; }
+
+      // Relación con ProductosPorFactura
+      public virtual ICollection<ProductosPorFactura> ProductosPorFactura { get; set; }
+
+      public Factura() {}
+
+      public Factura(DateTime fecha, double total, Cliente cliente, Vendedor vendedor, long? numero = null) 
       {
-        Fecha = fecha;
         Numero = numero;
+        Fecha = fecha;
         Total = total;
         Cliente = cliente ?? throw new ArgumentNullException(nameof(cliente));
-        Vendedor = vendedor ?? throw new ArgumentNullException(nameof(vendedor));
       }
 
-        public void cancelar(int codigo) 
+        public void cancelar(long codigo) 
       {
         var factura = _context.Factura.Find(codigo);
         if (factura == null)
@@ -33,7 +44,7 @@ namespace app.Models.Diagram1
         _context.Factura.Remove(factura);
         _context.SaveChanges();
       }
-      public Factura? consultar(int numero) 
+      public Factura? consultar(long numero) 
       {
         var factura = _context.Factura.Find(numero);
         if (factura == null) 
@@ -50,7 +61,7 @@ namespace app.Models.Diagram1
         _context.SaveChanges();
         Console.WriteLine("Producto guardada exitosamente.");
       }
-      public void modificar(int numero, Factura nuevaFactura) 
+      public void modificar(long numero, Factura nuevaFactura) 
       {
         var factura = _context.Factura.Find(numero);
         if (factura == null) 
