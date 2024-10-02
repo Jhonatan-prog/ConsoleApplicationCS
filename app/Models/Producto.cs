@@ -5,9 +5,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 // controllers
 using app.Controllers;
 
-namespace app.Models.Diagram1 
+namespace app.Models 
 {
-    public class Producto : DbRepository 
+  public class Producto
+  {
+      public long Codigo { get; set; }  // BIGINT
+      public string Nombre { get; set; }  // VARCHAR(255)
+      public int Stock { get; set; }  // INT
+      public float ValorUnitario { get; set; }  // FLOAT
+      // Navigation property
+      public virtual ICollection<ProductosPorFactura> ProductosPorFacturas { get; set; } = new List<ProductosPorFactura>();
+  }
+/*     public class Producto : DbRepository 
     {
       [Key]
       [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Auto-increment in SQL Server
@@ -73,5 +82,5 @@ namespace app.Models.Diagram1
         _context.SaveChanges();
         Console.WriteLine("Empresa actualizada exitosamente.");
       }
-    }
+    } */
 }

@@ -5,9 +5,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 // controllers
 using app.Controllers;
 
-namespace app.Models.Diagram1 
+namespace app.Models 
 {
-    public class Empresa : DbRepository {
+  public class Empresa
+  {
+      public long Codigo { get; set; }  // BIGINT
+      public string Nombre { get; set; }  // VARCHAR(255)
+
+      // Navigation property
+      public virtual ICollection<Cliente> Clientes { get; set; } = new List<Cliente>();
+  }
+
+/*     public class Empresa : DbRepository {
       [Key]
       [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Auto-increment in SQL Server
       public long? Codigo { get; set; }  // Primary key   
@@ -70,5 +79,5 @@ namespace app.Models.Diagram1
         _context.SaveChanges();
         Console.WriteLine("Empresa actualizada exitosamente.");
       }
-    }
+    } */
 }

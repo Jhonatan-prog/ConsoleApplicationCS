@@ -1,4 +1,4 @@
-using app.Models.Diagram1;
+using app.Models;
 
 namespace app.Controllers 
 {

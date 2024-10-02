@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 // Diagrams
-using app.Models.Diagram1;
+using app.Models;
 
 namespace app.Data
 {
@@ -34,49 +34,58 @@ namespace app.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Relación uno a uno entre Persona y Cliente (con eliminación en cascada)
-            // Configuring the relationship with Cliente
-            modelBuilder.Entity<Cliente>()
-                .HasOne(c => c.Persona)
-                .WithMany(p => p.Clientes)
-                .HasForeignKey(c => c.PersonaId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Persona>()
-                .HasOne(p => p.PersonaReferencia)
-                .WithMany()
-                .HasForeignKey(p => p.PersonaCodigo)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasKey(p => p.Codigo);
 
-            // Relación uno a muchos entre Factura y Cliente
+            modelBuilder.Entity<Vendedor>()
+                .HasKey(v => v.Codigo);
+            
+            modelBuilder.Entity<Empresa>()
+                .HasKey(e => e.Codigo); 
+
+            modelBuilder.Entity<Factura>()
+                .HasKey(e => e.Numero);
+
+            modelBuilder.Entity<Producto>()
+                .HasKey(pd => pd.Codigo);
+
+            modelBuilder.Entity<ProductosPorFactura>()
+                .HasKey(ppf => new { ppf.NumeroFactura, ppf.CodigoProducto });
+
+            modelBuilder.Entity<Cliente>()
+                .HasOne(c => c.Empresa)
+                .WithMany(e => e.Clientes)
+                .HasForeignKey(c => c.CodigoEmpresa)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Vendedor>()
+                .HasOne(v => v.Persona)
+                .WithOne(p => p.Vendedor)
+                .HasForeignKey<Vendedor>(v => v.Codigo);
+
+            // inheritance for Cliente and Vendedor
+            modelBuilder.Entity<Cliente>().ToTable("Cliente");
+            modelBuilder.Entity<Vendedor>().ToTable("Vendedor");
+
             modelBuilder.Entity<Factura>()
                 .HasOne(f => f.Cliente)
                 .WithMany(c => c.Facturas)
-                .HasForeignKey(f => f.ClienteId)
+                .HasForeignKey(f => f.CodigoCliente)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configuring the relationship with Vendedor
-            modelBuilder.Entity<Vendedor>()
-                .HasOne(v => v.Persona)
-                .WithMany()
-                .HasForeignKey(v => v.PersonaCodigo)
-                .OnDelete(DeleteBehavior.Cascade);
 
-            // Relación uno a muchos entre ProductosPorFactura y Factura
             modelBuilder.Entity<ProductosPorFactura>()
-                .HasOne(pf => pf.Factura)
-                .WithMany(f => f.ProductosPorFactura)
-                .HasForeignKey(pf => pf.FacturaId)
+                .HasOne(ppf => ppf.Factura)
+                .WithMany(f => f.ProductosPorFacturas)
+                .HasForeignKey(ppf => ppf.NumeroFactura)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Relación uno a muchos entre ProductosPorFactura y Producto
             modelBuilder.Entity<ProductosPorFactura>()
-                .HasOne(pf => pf.Producto)
-                .WithMany(p => p.ProductosPorFactura)
-                .HasForeignKey(pf => pf.ProductoId)
+                .HasOne(ppf => ppf.Producto)
+                .WithMany(p => p.ProductosPorFacturas)
+                .HasForeignKey(ppf => ppf.CodigoProducto)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

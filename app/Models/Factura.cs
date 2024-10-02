@@ -1,13 +1,19 @@
-// system
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 // controllers
-using app.Controllers;
-
-namespace app.Models.Diagram1 
+namespace app.Models 
 {
-    public class Factura : DbRepository
+
+  public class Factura
+  {
+    public long Numero { get; set; }  // BIGINT
+    public DateTime Fecha { get; set; } = DateTime.Now;  // DATE
+    public float Total { get; set; }  // FLOAT
+    public long CodigoCliente { get; set; }  // BIGINT
+
+    // Navigation properties
+    public virtual Cliente Cliente { get; set; }
+    public virtual ICollection<ProductosPorFactura> ProductosPorFacturas { get; set; } = new List<ProductosPorFactura>();
+  }
+/*     public class Factura : DbRepository
     {
       [Key]
       [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Auto-increment in SQL Server
@@ -74,5 +80,5 @@ namespace app.Models.Diagram1
         _context.SaveChanges();
         Console.WriteLine("Empresa actualizada exitosamente.");
       }
-    }
+    } */
 }
