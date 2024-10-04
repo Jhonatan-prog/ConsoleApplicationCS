@@ -12,7 +12,7 @@ using app.Data;
 namespace app.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241002211345_InitialCreate")]
+    [Migration("20241004214027_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -231,7 +231,7 @@ namespace app.Migrations
                     b.HasOne("app.Models.Persona", null)
                         .WithOne()
                         .HasForeignKey("app.Models.Cliente", "Codigo")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("app.Models.Empresa", "Empresa")

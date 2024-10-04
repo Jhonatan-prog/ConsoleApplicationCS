@@ -228,7 +228,7 @@ namespace app.Migrations
                     b.HasOne("app.Models.Persona", null)
                         .WithOne()
                         .HasForeignKey("app.Models.Cliente", "Codigo")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("app.Models.Empresa", "Empresa")

@@ -172,7 +172,7 @@ namespace app.Migrations
                 column: "Codigo",
                 principalTable: "Persona",
                 principalColumn: "Codigo",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />

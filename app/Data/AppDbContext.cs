@@ -40,7 +40,7 @@ namespace app.Data
 
             modelBuilder.Entity<Vendedor>()
                 .HasKey(v => v.Codigo);
-            
+
             modelBuilder.Entity<Empresa>()
                 .HasKey(e => e.Codigo); 
 
@@ -54,14 +54,20 @@ namespace app.Data
                 .HasKey(ppf => new { ppf.NumeroFactura, ppf.CodigoProducto });
 
             modelBuilder.Entity<Cliente>()
+                .HasOne<Persona>()
+                .WithOne()
+                .HasForeignKey<Cliente>(c => c.Codigo)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Cliente>()
                 .HasOne(c => c.Empresa)
                 .WithMany(e => e.Clientes)
                 .HasForeignKey(c => c.CodigoEmpresa)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Vendedor>()
-                .HasOne(v => v.Persona)
-                .WithOne(p => p.Vendedor)
+                .HasOne(p => p.Persona)
+                .WithOne(v => v.Vendedor)
                 .HasForeignKey<Vendedor>(v => v.Codigo);
 
             // inheritance for Cliente and Vendedor
